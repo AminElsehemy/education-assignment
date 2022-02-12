@@ -1,11 +1,7 @@
 # Getting Started with Terraform - Docker Provider
 HashiCorp Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle.
 
-The Docker provider is used to interact with Docker containers and images. It uses the Docker API to manage the lifecycle of Docker containers. 
-
-The objective of this tutorial is to get you started with Terraform and walk you through the Terraform basics to build and destroy Docker infrastructure. 
-
-Test
+The Docker provider is used to interact with Docker containers and images. It uses the Docker API to manage the lifecycle of Docker containers. The objective of this tutorial is to get you started with Terraform and walk you through the Terraform basics to build and destroy Docker infrastructure using Terraform Docker Provider. 
 
 This tutorial provides you a step-by-step guide to achieve the following:
 
@@ -14,14 +10,14 @@ This tutorial provides you a step-by-step guide to achieve the following:
 * Create basic Terraform configuration code using Docker provider
 * Pull and create a docker image resource
 * Create a docker container resource
-* Clean up and delete created resources 
+* Clean up created resources 
 
 ## Prerequisites
 
 * [Terraform](https://www.terraform.io/) **version** 0.13 or later
 * [Docker](https://docs.docker.com/get-docker/)
 
-## Install Terraform
+### Install Terraform
 
 HashiCorp distributes Terraform as a [binary package](https://www.terraform.io/downloads). Select the appropriate package for your system and download it as a zip archive.
 
@@ -29,7 +25,7 @@ After downloading Terraform, unzip the package. Terraform runs as a single binar
 
 Finally, make sure that the `terraform` binary is available on your `PATH`. This process will differ depending on your operating system.
 
-### Verify the installation
+#### Verify the installation
 
 Verify that the installation worked by opening a new terminal session and listing Terraform's available subcommands.
 
@@ -67,22 +63,46 @@ Usage: terraform [global options] plan [options]
 ##...
 ```
 
-## Create Terraform configuration code 
+#### Troubleshoot 
+If you get an error that `terraform` could not be found, your PATH environment variable was not set up properly. Please go back and ensure that `your` PATH variable contains the directory where Terraform was installed.
+
+**Linux or MacOs**
+```shell
+$ echo $PATH
+```
+Move the Terraform binary to one of the listed locations. This command assumes that the binary is currently in your downloads folder and that your `PATH` includes `/usr/local/bin`, but you can customize it if your locations are different.
+```shell
+mv ~/Downloads/terraform /usr/local/bin/
+```
+For more detail about adding binaries to your path, see this [Stack Overflow article](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux-unix).
+
+**Windows**
+[This Stack Overflow article](https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows) contains instructions for setting the PATH on Windows through the user interface.
+
+### Install Docker 
+In this tutorial Terraform interacts with Docker API to create and destroy Docker resources. To succesfully complete the tutorial, Docker must be installed on your local machine. [This Docker documentation](https://docs.docker.com/engine/install/) contains instuctions on downloading and installing Docker on your local machine. This process will differ depending on your operating system.  
+
+**NOTE:** After successfully installing and starting Docker, the `dockerd` daemon runs with its default configuration. For troubleshooting and installation verification follow this [Docker guide](https://docs.docker.com/config/daemon/).
+
+## Quick start tutorial
+Now that you've installed Terraform and Docker, you can provision an NGINX server in less than a minute using Docker on Mac, Windows, or Linux. 
+
+### Create Terraform configuration code 
 We recommend you create a new directory on your local machine, and create the Terraform configutation file inside of the new directory.  
 
-### Create a directory named `terraform-demo`
+#### Create a directory named `terraform-demo`
 ```shell
 mkdir terraform-demo
 ```
-### Change into the directory.
+#### Change into the directory.
 ```shell
 cd terraform-demo
 ```
-### Create a file to define your infrastructure.
+#### Create a file to define your infrastructure.
 ```shell
 touch main.tf
 ```
-### Open `main.tf `in your text editor, paste in the configuration below, and save the file.
+#### Open `main.tf `in your text editor, paste in the configuration below, and save the file.
 **Linux or MacOs**
 ```hcl
 # Set the required provider and versions
@@ -152,7 +172,7 @@ resource "docker_container" "nginx" {
 }
 ```
 
-## Initialize the directory
+### Initialize the directory
 When you create a new configuration — or check out an existing configuration from version control — you need to initialize the directory with `terraform init`.
 
 Initializing a configuration directory downloads and installs the providers defined in the configuration, which in this case is the docker provider.
@@ -177,7 +197,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-## Create infrastructure
+### Create infrastructure
 Apply the configuration now with the `terraform apply` command. Terraform will print output similar to what is shown below. We have truncated some of the output to save space.
 
 ```shell
@@ -236,7 +256,7 @@ docker_container.nginx: Creation complete after 2s [id=1043ae71d7a1cc61f2c2fcbc9
 ```
 You have now created infrastructure using Terraform! Visit `localhost:8000` in your web browser to verify the container started.
 
-## Destroy infrastructure
+### Destroy infrastructure
 You have now created and updated a Docker container on your machine with Terraform. In this section, you will use Terraform to destroy this infrastructure.
 
 Once you no longer need infrastructure, you may want to destroy it to reduce your security exposure, costs, or resource overhead. For example, you may remove a production environment from service, or manage short-lived environments like build or testing systems. In addition to building and modifying infrastructure, Terraform can destroy or recreate the infrastructure it manages.
@@ -289,9 +309,16 @@ docker_image.nginx: Destruction complete after 0s
 
 ## Next Steps
 
-Now that you have created your first infrastructure using Terraform, continue to the next tutorial to modify your infrastructure.
+Now that you have created your first infrastructure using Terraform, continue to the next [tutorial](https://learn.hashicorp.com/tutorials/terraform/docker-change) to modify your infrastructure.
 
-For more detail on the concepts used in this [tutorial](https://learn.hashicorp.com/tutorials/terraform/docker-change):
+Next, you will create real infrastructure in the cloud of your choice.
+
+* [Amazon Web Services (AWS)](https://learn.hashicorp.com/tutorials/terraform/aws-build)
+* [Azure](https://learn.hashicorp.com/tutorials/terraform/azure-build)
+* [Google Cloud Platform (GCP)](https://learn.hashicorp.com/tutorials/terraform/google-cloud-platform-build)
+* [Oracle Cloud Platform (OCI)](https://learn.hashicorp.com/tutorials/terraform/oci-build)
+
+For more detail on the concepts used in this tutorial:
 
 * Read about the Terraform configuration language in the [Terraform documentation](https://www.terraform.io/language).
 * Learn more about Terraform [providers](https://www.terraform.io/language/providers).
